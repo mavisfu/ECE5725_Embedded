@@ -1,0 +1,1165 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Voice Changer</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+    <!-- Custom styles for this template -->
+    <link href="starter-template.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <!-- <script src="../../assets/js/ie-emulation-modes-warning.js"></script> -->
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <style>
+        .font-code {
+            font-family: 'Lucida Console', monospace;
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
+    <style>
+        .h4-normal {
+            text-align: justify;
+            padding: 0px;
+            font-size: 18px;
+        }
+    
+        .h5-normal {
+            text-align: justify;
+            font-size: 18px;
+            padding: 0px 25px;
+        }
+    </style>
+    <style>
+        .heading4 {
+            text-align: left;
+            font-size: 23px;
+            margin-top: 30px;
+            font-weight: bold;
+        }
+    
+        .heading5 {
+            text-align: left;
+            font-size: 20px;
+            margin-top: 25px;
+            font-style: italic;
+        }
+    </style>
+    <style>
+        .courier-code {
+            font-family: 'Courier New', monospace;
+            line-height: 1;
+            padding: 0px 30px;
+            font-size: 16px;
+        }
+    </style>
+    <style>
+        .figure {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+    
+        .sound-name {
+            text-align: left;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Voice Changer</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#intro">Introduction</a></li>
+            <li><a href="#obj">Project Objective</a></li>
+            <li><a href="#design">Design and Testing</a></li>
+            <li><a href="#results">Results</a></li>
+            <li><a href="#Conclusions">Conclusions</a></li>
+            <li><a href="#Future">Future Work</a></li>
+            <li><a href="#Work">Work Distribution</a></li>
+            <li><a href="#Parts">Parts List</a></li>
+            <li><a href="#References">References</a></li>
+            <li><a href="#Code">Code</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+
+      <div class="starter-template">
+        <h1>Voice Changer</h1>
+        <p class="lead">ECE5725 Fall2023 Project<br>By Wenyi Fu (wf223) and Kaiyuan Xu (kx74)</p>
+      </div>
+
+      <hr>
+      <div class="center-block">
+          <iframe width="640" height="360" src="https://www.youtube.com/embed/GuM8vTq0jd4" frameborder="0" allowfullscreen></iframe>
+          <h4 style="text-align:center;">Demonstration Video</h4>
+      </div>
+
+      <hr id="intro">
+
+      <div style="text-align:center;">
+              <h2>Introduction</h2>
+              <p style="text-align: justify;padding: 0px; font-size: 18px;">The Voice Changer Project is an embedded system based on the Raspberry Pi 4, designed to capture, process, and transform real-time voice input into a variety of interesting sound effects, including Elf/Monster, Optimus Prime, Echo, and Hacker. The system integrates a USB microphone, a pair of speakers, and a PiTFT touchscreen as hardware components. It utilizes optimized libraries for audio processing, and provides user-friendly interfaces for immediate control.</p>
+      </div>
+
+    <hr id='obj'>
+
+      <div class="row">
+          <div class="col-md-4" style="text-align:center;">
+          <img class="img-rounded" src="img/voice_changer.jpg" alt="Generic placeholder image" width="330" height="240">
+          </div>
+          <div class="col-md-8" style="font-size:18px;">
+          <h2>Project Objective:</h2>
+          <ul style="line-height: 2.5;">
+              <li>Voice input from USB microphone (marked by the red box), output into the speaker.</li>
+              <li>Implementation of Fast-Fourier Transformation to process the audio.</li>
+              <li>Both time-domain and frequency-domain modification of voice.</li>
+              <li>Interface of touch screen buttons, using FIFO to transmit data and display on PiTFT.</li>
+          </ul>
+          </div>
+      </div>
+
+    <hr id='design'>
+
+      <div style="text-align:center;">
+              <h2>Design and Testing</h2>
+              <h3 style="text-align: left; font-size: 22px;"><b>Core Functionality and Implementation</b></h3>
+              <p style="text-align: justify;padding: 0px; font-size: 18px;">The idea is to use the Raspberry Pi to implement a real-time voice changer. By speaking into a microphone, we will capture the input data and process it to alter the pitch and timbre of the voice. The modified voice will be played through the speakers simultaneously (with necessarily a little lagging), allowing for an interactive voice transformation experience. The process schematic is shown in <b>Figure 1</b>.</p>
+              <div class="row" style="text-align:center;">
+                <img class="img-rounded" src="img/Figure1.jpg" alt="Generic placeholder image" width="750" height="320" style="margin-bottom: 10px;">
+                <div class="figure">
+                  <p>Figure 1. Voice Changing Process Diagram</p> 
+                </div>
+              </div>
+              
+              <div style="text-align: justify;padding: 0px; font-size: 18px;">
+                <p>Since the Raspberry Pi 4 does not have an onboard microphone, an external microphone is required for inputting audio data. We employed a Mini USB microphone due to its integrated analog-to-digital converter (ADC), so that we do not need to do the analog-to-digital conversion manually. The hardware connection is shown in <b>Figure 2</b>.</p>
+                  <div class="row" style="text-align:center;">
+                    <img class="img-rounded" src="img/hardware.jpg" alt="Generic placeholder image" width="560" height="230" style="margin-bottom: 10px;">
+                    <div class="figure">
+                      <p>Figure 2. Hardware Connection</p> 
+                    </div>
+                  </div>
+                <p>As illustrated in <b>Figure 1</b>, once the audio input is acquired, there are two separate methods implemented to process the data: one involves direct processing in the time domain, while the other employs the Python NumPy library to perform Fast Fourier Transform, processes the data in the frequency domain, and then performs inverse Fourier transformation before sending the data to the speaker for output. We have implemented four different sound effects, two of which are achieved by time-domain modifications and the other two by frequency-domain modifications. Note that the microphone keeps receiving inputs while the speaker plays the processed voice outputs, emphasizing on the “real-time” feature of the voice changer.</p>
+                <p>In addition to the characteristics of real-time input-output streaming and the sound processing (which are integrated together), this project includes another significant feature involving the PiTFT display and user interaction interface, implemented with the Python pygame library. When the program is executed, the PiTFT screen displays a menu as shown in <b>Figure 3</b>. It features four sound effects that can be selected by pressing the touchscreen buttons, along with a shuffle button for a random selection among the four effects. After a sound effect mode is selected, the color of the button will be changed to indicate the chosen sound effect.</p>
+                  <div class="row" style="text-align:center;">
+                    <img class="img-rounded" src="img/Figure3.jpg" alt="Generic placeholder image" width="500" height="320" style="margin-bottom: 10px;">
+                    <div class="figure">
+                      <p>Figure 3. The initial menu display on PiTFT</p> 
+                    </div>
+                  </div>
+                <p>For two of the implemented sound effects (<b>Echo</b> and <b>Optimus Prime</b>), the current voice modulation parameter mode and parameter value are displayed in the bottom right corner of the PiTFT screen (refer to <b>Figure 4</b>). Users can adjust the parameter values by pressing the physical buttons (GPIO17 for increasing and GPIO22 for decreasing), or toggle the parameter mode using GPIO23. For the other two sound effects (<b>Hacker</b> and <b>Elf/Monster</b>), there are no adjustable parameters. Instead, a GIF loops on the PiTFT screen, enhancing the user experience with some visual enjoyment (refer to <b>Figure 5</b>). A bail out button (GPIO27) is also implemented. The details of the sound effects and the parameter effects will be elaborated on in the next section.</p>
+                
+                <div class="col-md-6" style="font-size:16px; text-align:center;">
+                  <img class="img-rounded" src="img/Figure4.jpg" alt="Generic placeholder image" width="400" height="240">
+                  
+                  <p class="figure">Figure 4. Echo sound effect with parameter displayed</p>
+                </div>
+                <div class="col-md-6" style="font-size:16px; text-align: center;">
+                    <img class="img-rounded" src="img/Figure5.jpg" alt="Generic placeholder image" width="400" height="240">
+                    <p class="figure">Figure 5. Hacker sound effect with a gif animated</p>
+                    
+                </div>
+                
+              </div>
+              
+        
+              
+              <h3 style="text-align: left; font-size: 22px;"><b>Code Organization</b></h3>
+              <div style="text-align: justify;padding: 0px; font-size: 18px;">
+                <p>In the stage of audio processing using software, since Python will be used, the library PyAudio is utilized to receive data chunk input from the microphone and to play the modified audio through the speaker. Four sound effects are implemented in total and the sound modification involves time as well as frequency domain processing for different effects. Moreover, noise reduction is applied to improve the clarity and quality of the output audio. As mentioned in the previous section, to make the voice changer more interactive, physical buttons and touchscreen user interface are implemented using the pygame library to enable sound effect selection and real-time adjustment of voice modulation parameters.</p>
+                <p>Since pygame requires 'sudo' to run the program while PyAudio conflicts with this command, two separate python files are needed for breaking down the audio functionalities and the touchscreen interaction functionalities. The communication between these two files is established through two FIFO files, which will be fully illustrated in the following sections. By executing the bash script shown below, the voice-changing functionality can be effectively realized:</p>
+                <div class="courier-code">
+                  <p>% python /home/pi/final_project/real_time_effect_with_button.py &
+                  <p>% sudo python /home/pi/final_project/button_test.py
+                </div>
+              </div>
+              
+              <h4 class="heading4">audio.py</h4>
+              <div class="h4-normal">
+                <p>This python file is used to implement different sound effects and output the changed voice into the speaker, and it cannot be run by 'sudo'. Furthermore, it consists of several blocks, including physical buttons, microphone callback function and data sending through FIFO.</p>
+              </div>
+                <h5 class="heading5">a. Thread 1: data_sending</h5>
+                <div class="h5-normal">
+                  <p>Thread 1 is used to send the value of <span class="font-code">freq_shift_factor</span>, <span class="font-code">echo_num</span> and <span class="font-code">echo_delay</span> to the <span class="font-code">touchscreen.py</span> file through the FIFO called <span class="font-code">par_value_fifo</span>, which will be displayed on the PiTFT touch screen, helping users to tune the parameters.</p>
+                  <p>In the FIFO write process, we encountered the issue that sometimes there were broken pipe errors of the FIFO files, and more than one value was stored in the FIFO that had not been read. To debug, we extracted the code related to FIFO read and write from the project codes and directly used the 'echo' command to test FIFO read and 'cat' to test FIFO write functionalities. In this way, we pinpointed the source of the problem more efficiently and observed the error was that it failed to synchronize between the FIFO read and write operations in the two processes.</p>
+                  <p>At first, we thought the errors occurring regarding synchronization were due to the blocking read/write, so we tried non-blocking methods, but the problem still remained. Then we discovered that the blocking method was actually sufficient. The problem was that our thread functionality was too simple, causing the loop to run too frequently, and the FIFO read/write couldn't synchronize within such a short time period. We resolved the issue by adding a <span class="font-code">time.sleep(0.05)</span> in the thread to extend the duration of the thread loop.</p>
+                </div>
+                <h5 class="heading5">b. Thread 2: freq_shift_up</h5>
+                <div class="h5-normal">
+                  <p>Thread 2 is used to continuously tune the <span class="font-code">freq_shift_factor</span> up and down to realize the function that the voice pitch will have a continuous change and the primary use of this thread is to adjust the speed of the frequency change by tuning <span class="font-code">time.sleep()</span> function. Also, implementing this new thread will not have conflict with the main program when stucking in the FIFO read process.</p>
+                  </div>
+                <h5 class="heading5">c. Microphone Callback Function</h5>
+                <div class="h5-normal">
+                  <p>Initially, we attempted to realize real-time audio play by simultaneously recording and playing two WAV files. However, this approach yielded unsatisfactory results, characterized by noticeable noise that significantly compromised the clarity of the output voice. Consequently, we introduced a voice callback function to solve this issue. This function processes a chunk of data, specifically 2,048 bits, during each iteration, providing nearly real-time output with a delay of less than half a second.</p>
+                  <p>Within the microphone callback function, the input data is initially converted into a Numpy array. Subsequently, after processing in either the time or frequency domain, the data is converted back into a byte stream. Upon initialization, the parameter <span class="font-code">sound_effect</span> is set to 0, indicating the original unmodified voice. </p>
+                  <ul>
+                    <li><b>Elf/Monster</b> 
+                      <p>When the <span class="font-code">sound_effect</span> is changed to <b>Elf/Monster</b> through pressing a touchscreen button, Fast Fourier Transformation (FFT) is implemented on the input audio data to realize transition to the frequency domain. The function <span class="font-code">np.roll(rfft_audio_data, freq_shift_factor)</span> is then utilized to shift the pitch higher or lower. And after the modification, the data is reverted to the time domain through inverse FFT before being played through the speaker, while time-domain modification only requires converting the data into byte stream.</p></li>
+                    <li><b>Echo</b>
+                      <p>Additionally, when the <b>Echo</b> effect is selected, the audio history from several previous loops is stored in an large array. This historical audio is played with a slight reduction in the current callback function, creating an echo effect. The number of loops ahead of the current loop is determined by the <span class="font-code">echo_delay</span> parameter, while the number of echoes, <span class="font-code">echo_num</span>, is controlled by GPIO17 and GPIO22 buttons.</p></li>
+                    <li><b>Optimus Prime</b>
+                      <p>The third sound effect, Optimus Prime, is achieved by adding the voices of several previous loops, creating an overlap in the output data.</p></li>
+                    <li><b>Hacker</b>
+                      <p>Finally, the Hacker effect involves the addition of five different pitches, modified in the frequency domain by <span class="font-code">freq_shift_factor</span> values of -30, -20, -10, 10, 20, and 30.</p></li>
+                  </ul>
+                  <p>With all the modifications implemented, there are quantities of noticeable noises, so they should be mitigated by some filters based on certain performance. At first, we were considering applying a low-pass butterworth filter to reduce the noise when the audio data stream is converted back to the time domain after frequency modification. However, this approach resulted in an increase in unwanted noise. Later, we adopted a simpler method by applying a window on the spectrum to filter out lower or higher frequency noises corresponding to the spectrum modification (shifting left or right). It is proved that This approach is more effective in implementing noise reduction on the output audio.</p>
+                  
+                  </div>
+
+                <h5 class="heading5">d. Button Callback Functions</h5>
+                <div class="h5-normal">
+                  <p>Most significantly, a physical bail out button is required which is set by GPIO27, for we need to exit all the programs when shutting down the device. At first, we just set <span class="font-code">code_run</span> and <span class="font-code">thread_run</span> to <span class="font-code">False</span>, and in this case, the main program loop could not be quit, since the blocking FIFO read was implemented in the main loop. If there was no data written into the FIFO by the python file, the main loop would be stuck in the FIFO read and the value of <span class="font-code">code_run</span> which was changed to <span class="font-code">False</span> by the bail out button could not be detected, so the main program was not able to exit. Therefore, the GPIO27 button was later modified by adding the FIFO write commands.</p>
+                  <div class="courier-code">
+                    <p>with open(par_value_fifo_path, 'w') as fifo:
+                    <div style="padding:0px 50px;">
+                      <p>fifo.write('')</p>
+                      <p>fifo.flush()</p>
+              
+                    </div>
+                  </div>
+                  <p>Next, GPIO17 and GPIO22 are used to increase or decrease the values of frequency shift factor, echo number and echo delay. When the sound effect is equal to Elf/Monster, the two buttons are used to increase and decrease the <span class="font-code">freq_shift_factor</span> ranging from -30 to 30, which indicates how many steps the audio data in frequency domain shifts to right or left, namely the tone that is tuned higher or lower. Also, a new button GPIO23 is applied to turn on the mode of continuously shifting the frequency in that range. In addition, when the sound effect is chosen as echo, GPIO17 and GPIO22 are used to increase or decrease echo number and delay, while GPIO23 is used to switch mode between adjusting echo number or echo delay.</p>
+                  </div>
+
+                <h5 class="heading5">e. Main Program</h5>
+                <div class="h5-normal">
+                  <p>In the main program, all the button callback functions is initialized, and the audio callback function is set by the following code:</p>
+                  <div class="courier-code">
+                    <p>p = pyaudio.PyAudio()
+                    <p>stream = p.open(format=pyaudio.paFloat32,
+                    <div style="padding:0px 50px;">
+                      <p>channels=CHANNELS,
+                      <p>rate=RATE,
+                      <p>output=True,
+                      <p>input=True,
+                      <p>stream_callback=callback)
+                    </div>
+                    <p># Start the stream
+                    <p>stream.start_stream()</p>
+                  </div>
+                  <p>Additionally, in the main loop, the sound effect control parameter is sent through the FIFO called <span class="font-code">sound_effect_fifo</span>, so when <span class="font-code">stream.is_active() & code_run</span> is <span class="font-code">True</span>, the python file can continuously read the data that is sent to the FIFO by <span class="font-code">touchscreen.py</span>.</p>
+                </div>
+
+              <h4 class="heading4">touchscreen.py</h4>
+              <p class="h4-normal">This python file implements the functionality of PiTFT display and touchscreen user interface. With the pygame library imported, the file must be run with the 'sudo' command. This code file is mainly composed of these parts: the callback function for the physical bail out button, two threads for writing/reading FIFO files respectively, and the main function that includes the PiTFT display and touchscreen control features.</p>
+                <h5 class="heading5">a. Thread 1: fifo_write()</h5>
+                  <p class="h5-normal">As indicated by the name, this thread writes data into a FIFO called <span class="font-code">sound_effect_fifo</span>, which is synchronously read by <span class="font-code">audio.py</span>, thereby completing the data transfer between the two processes via FIFO. The data transmitted in this FIFO is an integer ranging from 1 to 4, representing four different sound effects, which is determined by user operations on the PiTFT touchscreen and is then passed to <span class="font-code">audio.py</span> for corresponding audio processing.</p>
+                <h5 class="heading5">b. Thread 2: fifo_read()</h5>
+                  <p class="h5-normal">This thread reads data from a FIFO called <span class="font-code">par_value_fifo</span>, which is synchronously written into by <span class="font-code">audio.py</span>. The data transmitted in this FIFO follows the format of “{integer}_{integer}” and is applicable only to the <b>Echo</b> and <b>Elf/Monster</b> sound effects, as these are the sound effects that allow users to adjust parameters. The first integer can have a value of 1 or 2, corresponding to two different adjustable parameter modes (e.g., <span class="font-code">echo_num</span> and <span class="font-code">echo_delay</span> for <b>Echo</b>). The second integer represents the corresponding parameter value, and the two integers are separated by an underscore. In this thread, the string obtained from the FIFO is processed using the <span class="font-code">split</span> function to get the values of the two integers. These values are then accessed in the main function for the display of corresponding contents on the PiTFT.</p>
+                   
+                <h5 class="heading5">c. Button Callback Function</h5>
+                  <div class="h5-normal">
+                    <p>Similar to <span class="font-code">audio.py</span>, <span class="font-code">touchscreen.py</span> also requires a physical bail-out button. GPIO 27 is concurrently set as the bail-out button for both of these Python codes, as these two programs will run simultaneously, and we want to achieve the ability to exit the entire voice changer application with the press of a single button. As described in the previous text, when the GPIO 27 button is pressed, the program enters the callback function, where the variables <span class="font-code">code_run</span> and <span class="font-code">thread_run</span> are set to <span class="font-code">False</span> to terminate the corresponding while loop. Additionally, an empty string is written into the <span class="font-code">sound_effect_fifo</span> to prevent the program from getting stuck at the FIFO write in another thread and not being able to terminate.</p>
+                    </div>
+                <h5 class="heading5">d. The Main Function</h5>
+                  <div class="h5-normal">
+                    <p>Besides setting up an event detection for the GPIO pin, configuring threads, and performing necessary variable initialization, the main code is primarily responsible for all the display and touchscreen controls on the PiTFT.</p>
+                    <p>For the User Interface drawing, the code uses the pygame library to draw buttons on the screen, including their backgrounds and text (refer to <b>Figure 3</b>). Button colors change based on whether a particular sound effect has been selected. For the <b>Elf/Monster</b> and <b>Echo</b> sound effects, the screen displays the current adjustable parameter name and value (refer to <b>Figure 4</b> and <b>Figure 6</b>) obtained from the <span class="font-code">fifo_read</span> thread. If the selected sound effect is <b>Hacker</b> or <b>Optimus Prime</b>, a corresponding GIF is animated on the PiTFT screen (refer to <b>Figure 5</b> and <b>Figure 7</b>). </p>
+                    <div class="col-md-6" style="font-size:16px; text-align: center;">
+                    <img class="img-rounded" src="img/Figure6.jpg" alt="Generic placeholder image" width="400" height="240">
+                  
+                    <p class="figure">Figure 6. Elf/Monster sound effect with parameter displayed</p>
+                    </div>
+                  <div class="col-md-6" style="font-size:16px; text-align: center;">
+                      <img class="img-rounded" src="img/Figure7.jpg" alt="Generic placeholder image" width="400" height="240">
+                      <p class="figure">Figure 7. “Optimus Prime” sound effect with a gif animated</p>
+                      
+                    </div>
+                    
+                    <p>Due to the limitation of the pygame version, we could not directly use pygame to play GIFs on the screen. The approach we eventually used was decomposing the GIF frame by frame, sequentially displaying them, employing a variable called <span class="font-code">gif_frame_count</span> for looping through the frames.</p>
+                    <p>The code also detects touch screen button presses through pygame's event handling mechanism. When the user presses the PiTFT screen, the pressed coordinates are recorded and compared with the button coordinates to check if it is a button press. When it is, the corresponding sound effect is set, and clicking the “shuffle” button triggers the selection of a random sound effect.</p>
+
+                    </div>
+        
+      </div>
+
+    <hr id='results'>
+
+      <div style="text-align:center;">
+              <h2>Results</h2>
+
+              <h3 class="sound-name">Optimus Prime</h3>
+                <p style="display: inline-block; vertical-align: middle; font-size: 1.3em; margin-bottom: 10px;">Original Voice</p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <audio controls style="display: inline-block; vertical-align: middle;">
+                    <source src="audio/wf223.mp3" type="audio/mp3">
+                </audio>
+                <br>
+                <p style="display: inline-block; vertical-align: middle; font-size: 1.3em; margin-bottom: 10px;">Modified Voice</p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <audio controls style="display: inline-block; vertical-align: middle;">
+                    <source src="audio/optimus.mp3" type="audio/mp3">
+                </audio>
+
+              <h3 class="sound-name">Elf/Monster</h3>
+                <p style="display: inline-block; vertical-align: middle; font-size: 1.3em; margin-bottom: 10px;">Original Voice</p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <audio controls style="display: inline-block; vertical-align: middle;">
+                    <source src="audio/wf223.mp3" type="audio/mp3">
+                </audio>
+                <br>
+                <p style="display: inline-block; vertical-align: middle; font-size: 1.3em; margin-bottom: 10px;">Modified Voice: Monster</p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <audio controls style="display: inline-block; vertical-align: middle;">
+                    <source src="audio/monster.mp3" type="audio/mp3">
+                </audio>
+                <br>
+                <p style="display: inline-block; vertical-align: middle; font-size: 1.3em; margin-bottom: 10px;">Modified Voice: Elf</p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <audio controls style="display: inline-block; vertical-align: middle;">
+                    <source src="audio/elf.mp3" type="audio/mp3">
+                </audio>
+
+              <h3 class="sound-name">Echo</h3>
+                <p style="display: inline-block; vertical-align: middle; font-size: 1.3em; margin-bottom: 10px;">Original Voice</p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <audio controls style="display: inline-block; vertical-align: middle;">
+                    <source src="audio/kx74.mp3" type="audio/mp3">
+                </audio>
+                <br>
+                <p style="display: inline-block; vertical-align: middle; font-size: 1.3em; margin-bottom: 10px;">Modified Voice</p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <audio controls style="display: inline-block; vertical-align: middle;">
+                    <source src="audio/echo.mp3" type="audio/mp3">
+                </audio>
+
+              <h3 class="sound-name">Hacker</h3>
+                <p style="display: inline-block; vertical-align: middle; font-size: 1.3em; margin-bottom: 10px;">Original Voice</p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <audio controls style="display: inline-block; vertical-align: middle;">
+                    <source src="audio/kx74.mp3" type="audio/mp3">
+                </audio>
+                <br>
+                <p style="display: inline-block; vertical-align: middle; font-size: 1.3em; margin-bottom: 10px;">Modified Voice</p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <audio controls style="display: inline-block; vertical-align: middle;">
+                    <source src="audio/hacker.mp3" type="audio/mp3">
+                </audio>
+      
+      </div>
+
+    <hr id='Conclusions'>
+
+      <div style="text-align:center;">
+              <h2>Conclusions</h2>
+              <div class="h4-normal">
+                <p>For this project, the objective of implementing the “real-time” voice changer has been achieved with four sound effects, including <b>Optimus Prime</b>, <b>Elf/Monster</b>, <b>Echo</b> and <b>Hacker</b>. Pattern transitions can be initiated through the touch buttons shown on the PiTFT screen while the parameters adjustments are facilitated using the physical buttons (GPIO 17, 22, 23). What's more, a bail out button on GPIO 27 was implemented. </p>
+                <p>In order to make the system “embedded”, we tried to use the <span class="font-code">crontab</span> command to enable it to start automatically on boot so that we don't need extra peripherals such as a keyboard to launch the program. However, though our bash script could run smoothly when executed manually from any directory, <span class="font-code">crontab</span> caused errors when the Raspberry Pi was rebooted. Unfortunately, we were not able to identify the root cause of this issue eventually.</p>
+                <p>Overall, this is an interesting project that successfully achieved its initial goals. We applied knowledge acquired from lectures and labs into this project, including the utilization of the PiTFT touchscreen, threads, GPIO buttons and crontab, etc.</p>
+              </div>
+      </div>
+
+    <hr id='Future'>
+
+      <div style="text-align:center;">
+              <h2>Future Work</h2>
+              <div class="h4-normal">
+                <p>If we had more time to work on the project, we would expand the range of sound effects to include options like telephone, underwater, melody, and others. Additionally, we would enhance the audio quality by applying more advanced noise reduction filters to make the output audio more audible and clearer.</p>
+                <p>Also, it would be great if we could add more visual effects to the voice changer. We would use an external monitor as an extended display for visual elements like the gifs, and potentially add more animations. This configuration would enable our voice changer to simulate voice modulation synchronized with the content displayed on the monitor, acting as a “voice-over” for the gifs or animations presented on the screen.</p>
+              </div>
+              
+      </div>
+
+    <hr id='Work'>
+
+    <div class="row" style="text-align:center;">
+          <h2 style="margin-bottom: 30px;">Work Distribution</h2>
+
+          <div class="col-md-6" style="font-size:16px">
+              <img class="img-rounded" src="img/wf223.jpg" alt="Generic placeholder image" width="400" height="400">
+              <h3>Wenyi Fu</h3>
+              <p class="lead">wf223@cornell.edu</p>
+              <p>Worked with Kaiyuan to implement, test and debug real-time audio stream</p>
+              <p>Implementation of Elf/Monster and Hacker effects
+              <p>Wrote code for sound effects and audio playback, <span class="font-code">audio.py</span>
+          </div>
+          <div class="col-md-6" style="font-size:16px">
+              <img class="img-rounded" src="img/kx74.jpg" alt="Generic placeholder image" width="400" height="400">
+              <h3>Kaiyuan Xu</h3>
+              <p class="lead">kx74@cornell.edu</p>
+              <p>Worked with Wenyi to implement, test and debug real-time audio stream</p>
+              <p>Implementation of Echo and Optimus Prime effects
+              <p>Wrote code for PiTFT display and touchscreen control, <span class="font-code">touchscreen.py</span>
+               
+          </div>
+      </div>
+
+    <hr id='Parts'>
+      <div style="font-size:18px">
+          <h2>Parts List</h2>
+          <ul>
+              <li>Raspberry Pi $35.00 - provided in lab</li>
+              <li>PiTFT $44.95 - Provided in lab</li>
+              <li><a href="https://www.adafruit.com/product/3367">USB microphone $5.95 - Provided in lab</a></li>
+              <li>Speakers - Provided in lab</li>
+              <li>Keyboard - Provided in lab</li>
+          </ul>
+          <h3>Total: $85.9</h3>
+      </div>
+    
+    <hr id='References'>
+      <div style="font-size:18px">
+          <h2>References</h2>
+          <a href="https://segmentfault.com/q/1010000043287464">Real-Time Audio Signal Processing Using Python</a><br>
+          <a href="https://learn.adafruit.com/usb-audio-cards-with-a-raspberry-pi/recording-audio">USB Microphone Setting</a><br>
+          <a href="https://docs.scipy.org/doc/scipy/reference/fft.html">SciPy FFT</a><br>
+          <a href="https://numpy.org/doc/stable/reference/generated/numpy.roll.html">Numpy Frequency Shift</a><br>
+          <a href="https://people.csail.mit.edu/hubert/pyaudio/docs/">PyAudio Documentation</a><br>
+          <a href="https://stackoverflow.com/questions/17449110/fifo-reading-in-a-loop">FIFO Data Transmission</a><br>
+      </div>
+
+    <hr id='Code'>
+
+      <div class="row">
+              <h2>Code Appendix</h2>
+
+            
+                <h5 class="heading5">voice_changer.sh</h5>
+<!-- HTML generated using hilite.me -->
+<div
+    style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+    <pre style="margin: 0; line-height: 125%"><span style="color: #888888">#!/bin/bash</span>
+
+python <span style="color: #333333">/</span>home<span style="color: #333333">/</span>pi<span style="color: #333333">/</span>final_project<span style="color: #333333">/</span>audio<span style="color: #333333">.</span>py <span style="color: #333333">&amp;</span>
+
+sudo python <span style="color: #333333">/</span>home<span style="color: #333333">/</span>pi<span style="color: #333333">/</span>final_project<span style="color: #333333">/</span>touchscreen<span style="color: #333333">.</span>py
+</pre>
+</div>
+
+
+                <h5 class="heading5">audio.py</h5>
+    <!-- HTML generated using hilite.me -->
+    <div
+        style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+        <pre style="margin: 0; line-height: 125%"><span style="color: #888888"># By Wenyi Fu (wf223), Kaiyuan Xu (kx74)</span>
+<span style="color: #888888"># Final Project - Voice Changer</span>
+
+<span style="color: #888888">############################################################################</span>
+<span style="color: #888888">################# Import Libraries and Initialize GPIO #####################</span>
+<span style="color: #888888">############################################################################</span>
+
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">pyaudio</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">numpy</span> <span style="color: #008800; font-weight: bold">as</span> <span style="color: #0e84b5; font-weight: bold">np</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">time</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">os</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">RPi.GPIO</span> <span style="color: #008800; font-weight: bold">as</span> <span style="color: #0e84b5; font-weight: bold">GPIO</span>
+<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">scipy</span> <span style="color: #008800; font-weight: bold">import</span> signal
+<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">scipy.fftpack</span> <span style="color: #008800; font-weight: bold">import</span> fft, rfft, irfft
+<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">enum</span> <span style="color: #008800; font-weight: bold">import</span> Enum
+<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">threading</span> <span style="color: #008800; font-weight: bold">import</span> Thread
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">subprocess</span>
+
+GPIO<span style="color: #333333">.</span>setmode(GPIO<span style="color: #333333">.</span>BCM) <span style="color: #888888"># Set for GPIO numbering not pin numbers</span>
+GPIO<span style="color: #333333">.</span>setup(<span style="color: #0000DD; font-weight: bold">27</span>,GPIO<span style="color: #333333">.</span>IN,pull_up_down<span style="color: #333333">=</span>GPIO<span style="color: #333333">.</span>PUD_UP) <span style="color: #888888"># Bail out button</span>
+GPIO<span style="color: #333333">.</span>setup(<span style="color: #0000DD; font-weight: bold">17</span>,GPIO<span style="color: #333333">.</span>IN,pull_up_down<span style="color: #333333">=</span>GPIO<span style="color: #333333">.</span>PUD_UP) <span style="color: #888888"># Button to increase freq</span>
+GPIO<span style="color: #333333">.</span>setup(<span style="color: #0000DD; font-weight: bold">22</span>,GPIO<span style="color: #333333">.</span>IN,pull_up_down<span style="color: #333333">=</span>GPIO<span style="color: #333333">.</span>PUD_UP) <span style="color: #888888"># Button to decrease freq</span>
+GPIO<span style="color: #333333">.</span>setup(<span style="color: #0000DD; font-weight: bold">23</span>,GPIO<span style="color: #333333">.</span>IN,pull_up_down<span style="color: #333333">=</span>GPIO<span style="color: #333333">.</span>PUD_UP) <span style="color: #888888"># Button to change effect of echo and freq</span>
+
+<span style="color: #888888">############################################################################</span>
+<span style="color: #888888">################### Button Callback Functions ##############################</span>
+<span style="color: #888888">############################################################################</span>
+
+<span style="color: #888888"># Button to quit the program</span>
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">GPIO27_callback</span>(channel):
+    <span style="color: #008800; font-weight: bold">global</span> code_run
+    <span style="color: #008800; font-weight: bold">global</span> thread_run
+    code_run <span style="color: #333333">=</span> <span style="color: #007020">False</span>
+    thread_run <span style="color: #333333">=</span> <span style="color: #007020">False</span>
+    <span style="color: #008800; font-weight: bold">global</span> freq_shift_factor
+
+    <span style="color: #008800; font-weight: bold">with</span> <span style="color: #007020">open</span>(par_value_fifo_path, <span style="background-color: #fff0f0">&#39;w&#39;</span>) <span style="color: #008800; font-weight: bold">as</span> fifo:
+        fifo<span style="color: #333333">.</span>write(<span style="background-color: #fff0f0">&#39;&#39;</span>)
+        fifo<span style="color: #333333">.</span>flush()
+
+<span style="color: #888888"># Button to increase freq</span>
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">GPIO17_callback</span>(channel):
+    <span style="color: #008800; font-weight: bold">global</span> freq_shift_factor
+    <span style="color: #008800; font-weight: bold">global</span> sound_effect
+    <span style="color: #008800; font-weight: bold">global</span> echo_effect
+    <span style="color: #008800; font-weight: bold">global</span> echo_delay_par
+    <span style="color: #008800; font-weight: bold">global</span> echo_num_par
+    <span style="color: #008800; font-weight: bold">global</span> echo_num
+    <span style="color: #008800; font-weight: bold">global</span> echo_delay
+
+    <span style="color: #008800; font-weight: bold">if</span> (sound_effect <span style="color: #333333">==</span> Effects<span style="color: #333333">.</span>ELF<span style="color: #333333">.</span>value):
+        freq_shift_factor <span style="color: #333333">=</span> freq_shift_factor <span style="color: #333333">+</span> <span style="color: #0000DD; font-weight: bold">5</span>
+        <span style="color: #008800; font-weight: bold">if</span> (freq_shift_factor <span style="color: #333333">&gt;</span> <span style="color: #0000DD; font-weight: bold">30</span>):
+            freq_shift_factor <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">30</span>
+    <span style="color: #008800; font-weight: bold">elif</span> (sound_effect <span style="color: #333333">==</span> Effects<span style="color: #333333">.</span>ECHO<span style="color: #333333">.</span>value): 
+        <span style="color: #008800; font-weight: bold">if</span> (echo_effect <span style="color: #333333">==</span> echo_num_par):
+            echo_num <span style="color: #333333">=</span> echo_num <span style="color: #333333">+</span> <span style="color: #0000DD; font-weight: bold">1</span>
+            <span style="color: #008800; font-weight: bold">if</span> (echo_num <span style="color: #333333">&gt;</span> <span style="color: #0000DD; font-weight: bold">20</span>):
+                echo_num <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">20</span>
+        <span style="color: #008800; font-weight: bold">if</span> (echo_effect <span style="color: #333333">==</span> echo_delay_par):
+            echo_delay <span style="color: #333333">=</span> echo_delay <span style="color: #333333">+</span> <span style="color: #0000DD; font-weight: bold">10</span>
+
+<span style="color: #888888"># Button to decrease freq</span>
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">GPIO22_callback</span>(channel):
+    <span style="color: #008800; font-weight: bold">global</span> freq_shift_factor
+    <span style="color: #008800; font-weight: bold">global</span> echo_num
+    <span style="color: #008800; font-weight: bold">global</span> echo_delay
+    <span style="color: #008800; font-weight: bold">global</span> sound_effect
+    <span style="color: #008800; font-weight: bold">global</span> echo_effect
+    <span style="color: #008800; font-weight: bold">global</span> echo_num_par
+    <span style="color: #008800; font-weight: bold">global</span> echo_delay_par
+
+    <span style="color: #008800; font-weight: bold">if</span> (sound_effect <span style="color: #333333">==</span> Effects<span style="color: #333333">.</span>ELF<span style="color: #333333">.</span>value):
+        freq_shift_factor <span style="color: #333333">=</span> freq_shift_factor <span style="color: #333333">-</span> <span style="color: #0000DD; font-weight: bold">5</span>
+        <span style="color: #008800; font-weight: bold">if</span> (freq_shift_factor <span style="color: #333333">&lt;</span> <span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">30</span>):
+            freq_shift_factor <span style="color: #333333">=</span> <span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">30</span>
+    <span style="color: #008800; font-weight: bold">elif</span> (sound_effect <span style="color: #333333">==</span> Effects<span style="color: #333333">.</span>ECHO<span style="color: #333333">.</span>value): 
+        <span style="color: #008800; font-weight: bold">if</span> (echo_effect <span style="color: #333333">==</span> echo_num_par):
+            echo_num <span style="color: #333333">=</span> echo_num <span style="color: #333333">-</span> <span style="color: #0000DD; font-weight: bold">1</span>
+            <span style="color: #008800; font-weight: bold">if</span> (echo_num <span style="color: #333333">&lt;</span> <span style="color: #0000DD; font-weight: bold">0</span>):
+                echo_num <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>
+        <span style="color: #008800; font-weight: bold">if</span> (echo_effect <span style="color: #333333">==</span> echo_delay_par):
+            echo_delay <span style="color: #333333">=</span> echo_delay <span style="color: #333333">-</span> <span style="color: #0000DD; font-weight: bold">10</span>
+            <span style="color: #008800; font-weight: bold">if</span> (echo_delay <span style="color: #333333">&lt;</span> <span style="color: #0000DD; font-weight: bold">0</span>):
+                echo_delay <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>
+
+<span style="color: #888888"># Button to start continuously shift freq</span>
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">GPIO23_callback</span>(channel):
+    <span style="color: #008800; font-weight: bold">global</span> continue_freq_on
+    <span style="color: #008800; font-weight: bold">global</span> echo_effect
+    <span style="color: #008800; font-weight: bold">global</span> sound_effect
+    <span style="color: #008800; font-weight: bold">global</span> echo_num_par
+    <span style="color: #008800; font-weight: bold">global</span> echo_delay_par
+    <span style="color: #008800; font-weight: bold">if</span> (sound_effect <span style="color: #333333">==</span> Effects<span style="color: #333333">.</span>ELF<span style="color: #333333">.</span>value):
+        <span style="color: #008800; font-weight: bold">if</span> (continue_freq_on <span style="color: #333333">==</span> <span style="color: #0000DD; font-weight: bold">0</span>):
+            continue_freq_on <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">1</span>
+        <span style="color: #008800; font-weight: bold">else</span>:
+            continue_freq_on <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>
+    <span style="color: #008800; font-weight: bold">if</span> (sound_effect <span style="color: #333333">==</span> Effects<span style="color: #333333">.</span>ECHO<span style="color: #333333">.</span>value):
+        <span style="color: #008800; font-weight: bold">if</span> (echo_effect <span style="color: #333333">==</span> echo_num_par):
+            echo_effect <span style="color: #333333">=</span> echo_delay_par
+        <span style="color: #008800; font-weight: bold">else</span>:
+            echo_effect <span style="color: #333333">=</span> echo_num_par
+
+<span style="color: #888888">############################################################################</span>
+<span style="color: #888888">########################## Thread Definition ###############################</span>
+<span style="color: #888888">############################################################################</span>
+
+<span style="color: #888888"># Thread to send data of freq shift and echo num/delay</span>
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">DATA_SENDING</span>():
+    <span style="color: #008800; font-weight: bold">global</span> thread_run
+    <span style="color: #008800; font-weight: bold">global</span> freq_shift_factor
+    <span style="color: #008800; font-weight: bold">global</span> sound_effect
+    <span style="color: #008800; font-weight: bold">global</span> echo_delay
+    <span style="color: #008800; font-weight: bold">global</span> echo_num
+    <span style="color: #008800; font-weight: bold">global</span> echo_effect
+    <span style="color: #008800; font-weight: bold">global</span> echo_num_par
+    
+    thread_run <span style="color: #333333">=</span> <span style="color: #007020">True</span>
+    <span style="color: #008800; font-weight: bold">while</span> thread_run:
+        <span style="color: #888888"># print(&quot;thread entered&quot;)</span>
+        <span style="color: #008800; font-weight: bold">with</span> <span style="color: #007020">open</span>(par_value_fifo_path, <span style="background-color: #fff0f0">&#39;w&#39;</span>) <span style="color: #008800; font-weight: bold">as</span> fifo:
+            <span style="color: #008800; font-weight: bold">if</span> (sound_effect <span style="color: #333333">==</span> Effects<span style="color: #333333">.</span>ELF<span style="color: #333333">.</span>value):
+                fifo<span style="color: #333333">.</span>write(<span style="color: #007020">str</span>(freq_shift_factor))
+            <span style="color: #008800; font-weight: bold">elif</span> (sound_effect <span style="color: #333333">==</span> Effects<span style="color: #333333">.</span>ECHO<span style="color: #333333">.</span>value): 
+                <span style="color: #888888"># Determine which echo effect to send</span>
+                <span style="color: #008800; font-weight: bold">print</span>(<span style="background-color: #fff0f0">&#39;echo_effect&#39;</span> ,echo_effect)
+                <span style="color: #008800; font-weight: bold">if</span> (echo_effect <span style="color: #333333">==</span> echo_num_par):
+                    fifo<span style="color: #333333">.</span>write(<span style="background-color: #fff0f0">&#39;num_&#39;</span><span style="color: #333333">+</span> <span style="color: #007020">str</span>(echo_num))
+                <span style="color: #008800; font-weight: bold">else</span>:
+                    fifo<span style="color: #333333">.</span>write(<span style="background-color: #fff0f0">&#39;delay_&#39;</span><span style="color: #333333">+</span> <span style="color: #007020">str</span>(echo_delay))
+            fifo<span style="color: #333333">.</span>flush()
+        
+        time<span style="color: #333333">.</span>sleep(<span style="color: #6600EE; font-weight: bold">0.05</span>)
+
+<span style="color: #888888"># Thread to continuously shift the freq</span>
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">FREQ_SHIFT_UP_DOWN</span>():
+    <span style="color: #008800; font-weight: bold">global</span> thread_run
+    <span style="color: #008800; font-weight: bold">global</span> continue_freq_on
+    <span style="color: #008800; font-weight: bold">global</span> freq_shift_factor
+    <span style="color: #008800; font-weight: bold">global</span> incre
+
+    <span style="color: #008800; font-weight: bold">while</span> thread_run:
+        <span style="color: #888888"># Turn on/off the continue freq shift </span>
+        <span style="color: #008800; font-weight: bold">if</span> (continue_freq_on):
+            freq_shift_factor <span style="color: #333333">=</span> freq_shift_factor <span style="color: #333333">+</span> incre
+            <span style="color: #008800; font-weight: bold">if</span> (freq_shift_factor <span style="color: #333333">&gt;</span> <span style="color: #0000DD; font-weight: bold">30</span>):
+                incre <span style="color: #333333">=</span> incre <span style="color: #333333">*</span> <span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">1</span>
+            <span style="color: #008800; font-weight: bold">elif</span> (freq_shift_factor <span style="color: #333333">&lt;</span> <span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">30</span>):
+                incre <span style="color: #333333">=</span> incre <span style="color: #333333">*</span> <span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">1</span>
+        time<span style="color: #333333">.</span>sleep(<span style="color: #6600EE; font-weight: bold">0.1</span>)
+
+<span style="color: #888888">############################################################################</span>
+<span style="color: #888888">####################### FIFO Path Definition ###############################</span>
+<span style="color: #888888">############################################################################</span>
+
+directory_path <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;/home/pi/final_project&quot;</span>
+par_value_fifo_path <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;/home/pi/final_project/par_value_fifo&quot;</span>
+sound_effect_fifo_path <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;/home/pi/final_project/sound_effect_fifo&quot;</span>
+
+<span style="color: #888888"># fifo for control the sound effect type</span>
+<span style="color: #008800; font-weight: bold">if</span> <span style="color: #000000; font-weight: bold">not</span> os<span style="color: #333333">.</span>path<span style="color: #333333">.</span>exists(sound_effect_fifo_path):
+    os<span style="color: #333333">.</span>mkfifo(sound_effect_fifo_path)
+
+
+<span style="color: #888888"># fifo for sending the data to display current freq and encho number</span>
+<span style="color: #008800; font-weight: bold">if</span> <span style="color: #000000; font-weight: bold">not</span> os<span style="color: #333333">.</span>path<span style="color: #333333">.</span>exists(par_value_fifo_path):
+    os<span style="color: #333333">.</span>mkfifo(par_value_fifo_path)
+
+subprocess<span style="color: #333333">.</span>run([<span style="background-color: #fff0f0">&quot;sudo&quot;</span>, <span style="background-color: #fff0f0">&quot;chmod&quot;</span>, <span style="background-color: #fff0f0">&quot;o+w&quot;</span>, directory_path])
+subprocess<span style="color: #333333">.</span>run([<span style="background-color: #fff0f0">&quot;sudo&quot;</span>, <span style="background-color: #fff0f0">&quot;chmod&quot;</span>, <span style="background-color: #fff0f0">&quot;o+w&quot;</span>, par_value_fifo_path])
+subprocess<span style="color: #333333">.</span>run([<span style="background-color: #fff0f0">&quot;sudo&quot;</span>, <span style="background-color: #fff0f0">&quot;chmod&quot;</span>, <span style="background-color: #fff0f0">&quot;o+w&quot;</span>, sound_effect_fifo_path])
+
+<span style="color: #888888">############################################################################</span>
+<span style="color: #888888">########################## Parameter Definition ############################</span>
+<span style="color: #888888">############################################################################</span>
+
+<span style="color: #888888"># Parameters for the microphone input </span>
+CHANNELS <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">2</span>
+RATE <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">44100</span>
+pitch_factor <span style="color: #333333">=</span> <span style="color: #6600EE; font-weight: bold">0.5</span>
+
+<span style="color: #888888"># Parameters to implement elf/monster effect</span>
+freq_shift_factor <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">15</span>
+incre <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">1</span>
+continue_freq_on <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>
+
+<span style="color: #888888"># Parameters to control the sound effect </span>
+sound_effect_previous <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>
+sound_effect <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>
+<span style="color: #008800; font-weight: bold">class</span> <span style="color: #BB0066; font-weight: bold">Effects</span>(Enum):
+    ELF <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">1</span>
+    ECHO <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">2</span>
+    ROBOT <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">3</span>
+    ALIEN <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">4</span>
+
+<span style="color: #888888"># Parameter to control echo effect</span>
+audio_history <span style="color: #333333">=</span> []
+amp_factor <span style="color: #333333">=</span> <span style="color: #6600EE; font-weight: bold">0.5</span>
+echo_num <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">4</span>
+echo_delay <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">50</span>
+echo_delay_par <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>
+echo_num_par <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">1</span>
+echo_effect <span style="color: #333333">=</span> echo_num_par <span style="color: #888888"># Initialize</span>
+
+
+<span style="color: #888888">############################################################################</span>
+<span style="color: #888888">############### Microphone and Speaker Callback Function  ##################</span>
+<span style="color: #888888">############################################################################</span>
+
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">callback</span>(in_data, frame_count, time_info, flag):
+    <span style="color: #008800; font-weight: bold">global</span> freq_shift_factor
+    <span style="color: #008800; font-weight: bold">global</span> echo_num
+    <span style="color: #008800; font-weight: bold">global</span> echo_delay
+    <span style="color: #888888"># global amp_modify</span>
+
+    <span style="color: #888888"># using Numpy to convert to array for processing</span>
+    audio_data <span style="color: #333333">=</span> np<span style="color: #333333">.</span>frombuffer(in_data, dtype<span style="color: #333333">=</span>np<span style="color: #333333">.</span>float32)
+
+    <span style="color: #008800; font-weight: bold">if</span> (sound_effect <span style="color: #333333">==</span> Effects<span style="color: #333333">.</span>ELF<span style="color: #333333">.</span>value):
+        <span style="color: #888888"># Time domain -&gt; Frequency domain</span>
+        rfft_audio_data <span style="color: #333333">=</span> rfft(audio_data)
+
+        <span style="color: #888888"># Acceptable range: -30 ~ 30 </span>
+        shifted_rfft_audio_data <span style="color: #333333">=</span> np<span style="color: #333333">.</span>roll(rfft_audio_data, freq_shift_factor)  
+
+        <span style="color: #888888"># Reduce the noise</span>
+        <span style="color: #008800; font-weight: bold">if</span> (freq_shift_factor <span style="color: #333333">&gt;</span> <span style="color: #0000DD; font-weight: bold">0</span>):
+            shifted_rfft_audio_data[:(freq_shift_factor<span style="color: #333333">+</span><span style="color: #0000DD; font-weight: bold">20</span>)] <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>    
+        <span style="color: #008800; font-weight: bold">if</span> (freq_shift_factor <span style="color: #333333">&lt;</span> <span style="color: #0000DD; font-weight: bold">0</span>):
+            shifted_rfft_audio_data[(<span style="color: #0000DD; font-weight: bold">2048</span><span style="color: #333333">+</span>freq_shift_factor<span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">20</span>):] <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>  
+
+        <span style="color: #888888"># Frequency domain -&gt; Time domain</span>
+        irfft_audio_data <span style="color: #333333">=</span> irfft(shifted_rfft_audio_data) 
+
+        <span style="color: #888888"># Convert the data back into byte stream</span>
+        changed_data <span style="color: #333333">=</span> irfft_audio_data<span style="color: #333333">.</span>tobytes()
+
+    <span style="color: #008800; font-weight: bold">elif</span> (sound_effect <span style="color: #333333">==</span> Effects<span style="color: #333333">.</span>ECHO<span style="color: #333333">.</span>value):
+        <span style="color: #008800; font-weight: bold">if</span> (sound_effect_previous <span style="color: #333333">!=</span> Effects<span style="color: #333333">.</span>ECHO<span style="color: #333333">.</span>value):
+            audio_history<span style="color: #333333">.</span>clear()
+
+        len_audio_history <span style="color: #333333">=</span> echo_delay
+        <span style="color: #888888"># Initialization: fill in the history array</span>
+        <span style="color: #008800; font-weight: bold">if</span> (<span style="color: #007020">len</span>(audio_history) <span style="color: #333333">&lt;</span> len_audio_history):
+            audio_history<span style="color: #333333">.</span>append(audio_data)
+        <span style="color: #008800; font-weight: bold">else</span>:
+            audio_history<span style="color: #333333">.</span>pop(<span style="color: #0000DD; font-weight: bold">0</span>)
+            audio_history<span style="color: #333333">.</span>append(audio_data)
+        output_data <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>  
+
+        <span style="color: #888888"># Add echoes</span>
+        <span style="color: #008800; font-weight: bold">if</span> (<span style="color: #007020">len</span>(audio_history) <span style="color: #333333">==</span> len_audio_history):
+            <span style="color: #008800; font-weight: bold">for</span> i <span style="color: #000000; font-weight: bold">in</span> <span style="color: #007020">range</span>(echo_num):
+                output_data <span style="color: #333333">+=</span> audio_history[<span style="color: #007020">int</span>(len_audio_history<span style="color: #333333">*</span>(i<span style="color: #333333">/</span>echo_num))] <span style="color: #333333">*</span> amp_factor <span style="color: #333333">*</span> (i<span style="color: #333333">+</span><span style="color: #0000DD; font-weight: bold">1</span>)<span style="color: #333333">/</span>echo_num
+        
+        <span style="color: #888888"># Add the current input audio data</span>
+        output_data <span style="color: #333333">+=</span> audio_history[<span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">1</span>]
+        <span style="color: #888888"># Output data flow</span>
+        <span style="color: #888888"># Convert the data back into byte stream</span>
+        changed_data <span style="color: #333333">=</span> output_data<span style="color: #333333">.</span>tobytes()
+
+    <span style="color: #008800; font-weight: bold">elif</span> (sound_effect <span style="color: #333333">==</span> Effects<span style="color: #333333">.</span>ROBOT<span style="color: #333333">.</span>value):
+        <span style="color: #008800; font-weight: bold">if</span> (sound_effect_previous <span style="color: #333333">!=</span> Effects<span style="color: #333333">.</span>ROBOT<span style="color: #333333">.</span>value):
+            audio_history<span style="color: #333333">.</span>clear()
+        
+        len_audio_history <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">5</span>
+        <span style="color: #888888"># Initialization: fill in the history array</span>
+        <span style="color: #008800; font-weight: bold">if</span> (<span style="color: #007020">len</span>(audio_history) <span style="color: #333333">&lt;</span> len_audio_history):
+            audio_history<span style="color: #333333">.</span>append(audio_data)
+        <span style="color: #008800; font-weight: bold">else</span>:
+            audio_history<span style="color: #333333">.</span>pop(<span style="color: #0000DD; font-weight: bold">0</span>)
+            audio_history<span style="color: #333333">.</span>append(audio_data)    <span style="color: #888888"># Could also append shifted data</span>
+
+        output_data <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>
+
+        <span style="color: #008800; font-weight: bold">for</span> i <span style="color: #000000; font-weight: bold">in</span> <span style="color: #007020">range</span>(<span style="color: #007020">len</span>(audio_history)):
+            output_data <span style="color: #333333">+=</span> audio_history[i] <span style="color: #333333">*</span> (<span style="color: #007020">len</span>(audio_history)<span style="color: #333333">-</span>i) <span style="color: #333333">/</span> <span style="color: #007020">len</span>(audio_history)
+
+        <span style="color: #888888"># Convert the data back into byte stream</span>
+        changed_data <span style="color: #333333">=</span> output_data<span style="color: #333333">.</span>tobytes()
+
+    <span style="color: #008800; font-weight: bold">elif</span> (sound_effect <span style="color: #333333">==</span> Effects<span style="color: #333333">.</span>ALIEN<span style="color: #333333">.</span>value):
+        <span style="color: #888888"># Time domain -&gt; Frequency domain</span>
+        rfft_audio_data <span style="color: #333333">=</span> rfft(audio_data)
+    
+        <span style="color: #888888"># Add low and high components</span>
+        low1 <span style="color: #333333">=</span> np<span style="color: #333333">.</span>roll(rfft_audio_data, <span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">30</span>)
+        low2 <span style="color: #333333">=</span> np<span style="color: #333333">.</span>roll(rfft_audio_data, <span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">20</span>)
+        low3 <span style="color: #333333">=</span> np<span style="color: #333333">.</span>roll(rfft_audio_data, <span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">10</span>)
+        low4 <span style="color: #333333">=</span> np<span style="color: #333333">.</span>roll(rfft_audio_data, <span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">25</span>)
+        low5 <span style="color: #333333">=</span> np<span style="color: #333333">.</span>roll(rfft_audio_data, <span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">15</span>)
+        rfft_audio_data_add <span style="color: #333333">=</span> low1 <span style="color: #333333">+</span> low2 <span style="color: #333333">+</span> low3 <span style="color: #333333">+</span> low4 <span style="color: #333333">+</span> low5
+
+        <span style="color: #888888"># Reduce the noise</span>
+        rfft_audio_data_add[(<span style="color: #0000DD; font-weight: bold">2048</span> <span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">10</span>):] <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>  
+
+        <span style="color: #888888"># Frequency domain -&gt; Time domain</span>
+        irfft_audio_data <span style="color: #333333">=</span> irfft(rfft_audio_data_add)
+
+        <span style="color: #888888"># Convert the data back into byte stream</span>
+        changed_data <span style="color: #333333">=</span> irfft_audio_data<span style="color: #333333">.</span>tobytes()
+    
+    <span style="color: #008800; font-weight: bold">else</span>:
+        <span style="color: #888888"># Time domain -&gt; Frequency domain</span>
+        rfft_audio_data <span style="color: #333333">=</span> rfft(audio_data)       
+
+        <span style="color: #888888"># Frequency domain -&gt; Time domain</span>
+        irfft_audio_data <span style="color: #333333">=</span> irfft(rfft_audio_data) 
+
+        <span style="color: #888888"># Convert the data back into byte stream</span>
+        changed_data <span style="color: #333333">=</span> irfft_audio_data<span style="color: #333333">.</span>tobytes()
+
+    <span style="color: #008800; font-weight: bold">return</span> changed_data, pyaudio<span style="color: #333333">.</span>paContinue
+
+
+<span style="color: #888888">##############################################################################</span>
+<span style="color: #888888">############################ Main Code  ######################################</span>
+<span style="color: #888888">##############################################################################</span>
+
+<span style="color: #888888"># Define the callback event</span>
+GPIO<span style="color: #333333">.</span>add_event_detect(<span style="color: #0000DD; font-weight: bold">27</span>,GPIO<span style="color: #333333">.</span>FALLING,callback<span style="color: #333333">=</span>GPIO27_callback,bouncetime<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">300</span>)
+GPIO<span style="color: #333333">.</span>add_event_detect(<span style="color: #0000DD; font-weight: bold">17</span>,GPIO<span style="color: #333333">.</span>FALLING,callback<span style="color: #333333">=</span>GPIO17_callback,bouncetime<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">300</span>)
+GPIO<span style="color: #333333">.</span>add_event_detect(<span style="color: #0000DD; font-weight: bold">22</span>,GPIO<span style="color: #333333">.</span>FALLING,callback<span style="color: #333333">=</span>GPIO22_callback,bouncetime<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">300</span>)
+GPIO<span style="color: #333333">.</span>add_event_detect(<span style="color: #0000DD; font-weight: bold">23</span>,GPIO<span style="color: #333333">.</span>FALLING,callback<span style="color: #333333">=</span>GPIO23_callback,bouncetime<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">300</span>)
+
+<span style="color: #888888"># Start the Thread</span>
+t1 <span style="color: #333333">=</span> Thread(target<span style="color: #333333">=</span>DATA_SENDING)
+t2 <span style="color: #333333">=</span> Thread(target<span style="color: #333333">=</span>FREQ_SHIFT_UP_DOWN)
+t1<span style="color: #333333">.</span>start()
+t2<span style="color: #333333">.</span>start()
+
+<span style="color: #888888"># Initialize the main code and the thread </span>
+code_run <span style="color: #333333">=</span> <span style="color: #007020">True</span>
+
+<span style="color: #888888"># Open the sound stream</span>
+p <span style="color: #333333">=</span> pyaudio<span style="color: #333333">.</span>PyAudio()
+stream <span style="color: #333333">=</span> p<span style="color: #333333">.</span>open(format<span style="color: #333333">=</span>pyaudio<span style="color: #333333">.</span>paFloat32,
+                channels<span style="color: #333333">=</span>CHANNELS,
+                rate<span style="color: #333333">=</span>RATE,
+                output<span style="color: #333333">=</span><span style="color: #007020">True</span>,
+                <span style="color: #007020">input</span><span style="color: #333333">=</span><span style="color: #007020">True</span>,
+                stream_callback<span style="color: #333333">=</span>callback)
+
+stream<span style="color: #333333">.</span>start_stream()
+
+<span style="color: #888888"># Loop to read from the sound effect control fifo</span>
+<span style="color: #008800; font-weight: bold">while</span> (stream<span style="color: #333333">.</span>is_active() <span style="color: #333333">&amp;</span> code_run):
+    time<span style="color: #333333">.</span>sleep(<span style="color: #6600EE; font-weight: bold">0.1</span>)
+
+    <span style="color: #888888"># Blocking read</span>
+    <span style="color: #008800; font-weight: bold">with</span> <span style="color: #007020">open</span>(sound_effect_fifo_path, <span style="background-color: #fff0f0">&#39;r&#39;</span>) <span style="color: #008800; font-weight: bold">as</span> fifo:
+        data <span style="color: #333333">=</span> fifo<span style="color: #333333">.</span>readline()<span style="color: #333333">.</span>strip()
+        <span style="color: #008800; font-weight: bold">if</span> (data):
+            sound_effect_previous <span style="color: #333333">=</span> sound_effect
+            sound_effect <span style="color: #333333">=</span> <span style="color: #007020">int</span>(data)
+            <span style="color: #888888"># print(data)</span>
+
+<span style="color: #888888"># Stop and close the stream</span>
+stream<span style="color: #333333">.</span>stop_stream()
+<span style="color: #008800; font-weight: bold">print</span>(<span style="background-color: #fff0f0">&quot;Stream is stopped&quot;</span>)
+stream<span style="color: #333333">.</span>close()
+p<span style="color: #333333">.</span>terminate()
+
+<span style="color: #888888"># End the thread</span>
+t1<span style="color: #333333">.</span>join()   
+t2<span style="color: #333333">.</span>join()
+
+GPIO<span style="color: #333333">.</span>cleanup() <span style="color: #888888"># Clean the GPIO pin </span>
+</pre>
+</div>
+
+
+        <h5 class="heading5">touchscreen.py</h5>
+        <!-- HTML generated using hilite.me -->
+    <div
+        style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+        <pre style="margin: 0; line-height: 125%"><span style="color: #888888"># By Wenyi Fu (wf223), Kaiyuan Xu (kx74)</span>
+<span style="color: #888888"># Final Project - Voice Changer</span>
+
+<span style="color: #888888">############################################################################</span>
+<span style="color: #888888">################# Import Libraries and Initialize GPIO #####################</span>
+<span style="color: #888888">############################################################################</span>
+
+<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">pygame.locals</span> <span style="color: #008800; font-weight: bold">import</span> <span style="color: #333333">*</span> <span style="color: #888888"># for event MOUSE variables</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">RPi.GPIO</span> <span style="color: #008800; font-weight: bold">as</span> <span style="color: #0e84b5; font-weight: bold">GPIO</span>
+<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">threading</span> <span style="color: #008800; font-weight: bold">import</span> Thread
+<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">enum</span> <span style="color: #008800; font-weight: bold">import</span> Enum
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">pygame</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">time</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">os</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">random</span>
+
+<span style="color: #888888"># Bail out button</span>
+GPIO<span style="color: #333333">.</span>setmode(GPIO<span style="color: #333333">.</span>BCM) <span style="color: #888888"># Set for GPIO numbering not pin numbers</span>
+GPIO<span style="color: #333333">.</span>setup(<span style="color: #0000DD; font-weight: bold">27</span>,GPIO<span style="color: #333333">.</span>IN,pull_up_down<span style="color: #333333">=</span>GPIO<span style="color: #333333">.</span>PUD_UP) <span style="color: #888888"># Bail out button</span>
+
+<span style="color: #888888">############################################################################</span>
+<span style="color: #888888">################### Button Callback Functions ##############################</span>
+<span style="color: #888888">############################################################################</span>
+
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">GPIO27_callback</span>(channel):
+    <span style="color: #008800; font-weight: bold">global</span> code_run
+    <span style="color: #008800; font-weight: bold">global</span> thread_run
+    code_run <span style="color: #333333">=</span> <span style="color: #007020">False</span>
+    thread_run <span style="color: #333333">=</span> <span style="color: #007020">False</span>
+
+    <span style="color: #888888"># If the bail out button is pressed, write something into the fifo</span>
+    <span style="color: #888888"># so that it doesn&#39;t get stuck there</span>
+    <span style="color: #008800; font-weight: bold">with</span> <span style="color: #007020">open</span>(sound_effect_fifo_path, <span style="background-color: #fff0f0">&#39;w&#39;</span>) <span style="color: #008800; font-weight: bold">as</span> fifo:
+        fifo<span style="color: #333333">.</span>write(<span style="color: #007020">str</span>(<span style="background-color: #fff0f0">&#39;&#39;</span>))
+        fifo<span style="color: #333333">.</span>flush()
+
+<span style="color: #888888">############################################################################</span>
+<span style="color: #888888">####################### FIFO Path Definition ###############################</span>
+<span style="color: #888888">############################################################################</span>
+
+<span style="color: #888888"># Create the fifo</span>
+<span style="color: #888888"># For sound effect mode</span>
+sound_effect_fifo_path <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;/home/pi/final_project/sound_effect_fifo&quot;</span>
+<span style="color: #008800; font-weight: bold">if</span> <span style="color: #000000; font-weight: bold">not</span> os<span style="color: #333333">.</span>path<span style="color: #333333">.</span>exists(sound_effect_fifo_path):
+    os<span style="color: #333333">.</span>mkfifo(sound_effect_fifo_path)
+
+<span style="color: #888888"># For parameter value</span>
+par_value_fifo_path <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;/home/pi/final_project/par_value_fifo&quot;</span>
+<span style="color: #008800; font-weight: bold">if</span> <span style="color: #000000; font-weight: bold">not</span> os<span style="color: #333333">.</span>path<span style="color: #333333">.</span>exists(par_value_fifo_path):
+    os<span style="color: #333333">.</span>mkfifo(par_value_fifo_path)
+
+
+<span style="color: #888888">############################################################################</span>
+<span style="color: #888888">########################## Parameter Declaration ###########################</span>
+<span style="color: #888888">############################################################################</span>
+
+<span style="color: #888888"># Environmental parameters</span>
+os<span style="color: #333333">.</span>putenv(<span style="background-color: #fff0f0">&#39;SDL_VIDEODRIVER&#39;</span>,<span style="background-color: #fff0f0">&#39;fbcon&#39;</span>)  <span style="color: #888888"># Display on piTFT</span>
+os<span style="color: #333333">.</span>putenv(<span style="background-color: #fff0f0">&#39;SDL_FBDEV&#39;</span>,<span style="background-color: #fff0f0">&#39;/dev/fb0&#39;</span>)
+os<span style="color: #333333">.</span>putenv(<span style="background-color: #fff0f0">&#39;SDL_MOUSEDRV&#39;</span>, <span style="background-color: #fff0f0">&#39;TSLIB&#39;</span>) <span style="color: #888888"># Track mouse clicks on piTFT</span>
+os<span style="color: #333333">.</span>putenv(<span style="background-color: #fff0f0">&#39;SDL_MOUSEDEV&#39;</span>, <span style="background-color: #fff0f0">&#39;/dev/input/touchscreen&#39;</span>)
+
+<span style="color: #888888"># Initialize the pygame</span>
+pygame<span style="color: #333333">.</span>init()
+pygame<span style="color: #333333">.</span>mouse<span style="color: #333333">.</span>set_visible(<span style="color: #007020">False</span>)     <span style="color: #888888"># Control the mouse visibility, set it to invisible</span>
+white <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">255</span>, <span style="color: #0000DD; font-weight: bold">255</span>, <span style="color: #0000DD; font-weight: bold">255</span>
+black <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>, <span style="color: #0000DD; font-weight: bold">0</span>, <span style="color: #0000DD; font-weight: bold">0</span>
+red <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">255</span>, <span style="color: #0000DD; font-weight: bold">0</span>, <span style="color: #0000DD; font-weight: bold">0</span>
+green <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>, <span style="color: #0000DD; font-weight: bold">255</span>, <span style="color: #0000DD; font-weight: bold">0</span>
+gray <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">205</span>, <span style="color: #0000DD; font-weight: bold">193</span>, <span style="color: #0000DD; font-weight: bold">197</span>
+dark_red <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">210</span>, <span style="color: #0000DD; font-weight: bold">0</span>, <span style="color: #0000DD; font-weight: bold">0</span>
+size <span style="color: #333333">=</span> width,height <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">320</span>,<span style="color: #0000DD; font-weight: bold">240</span>
+screen <span style="color: #333333">=</span> pygame<span style="color: #333333">.</span>display<span style="color: #333333">.</span>set_mode(size) <span style="color: #888888"># Set to PiTFT screen size</span>
+
+<span style="color: #888888"># Initialize a mouse position that would not collide with the buttons</span>
+pos <span style="color: #333333">=</span> <span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">1</span>,<span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">1</span>
+
+<span style="color: #888888"># Sound effects</span>
+sound_effect <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>
+<span style="color: #008800; font-weight: bold">class</span> <span style="color: #BB0066; font-weight: bold">Effects</span>(Enum):
+    ELF <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">1</span>
+    ECHO <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">2</span>
+    ROBOT <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">3</span>
+    ALIEN <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">4</span>
+
+<span style="color: #888888">############################################################################</span>
+<span style="color: #888888">######################### FIFO Read/Write Threads ##########################</span>
+<span style="color: #888888">############################################################################</span>
+
+<span style="color: #888888"># Thread for writing into the fifo to change the sound effect</span>
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">fifo_write</span>():
+    <span style="color: #008800; font-weight: bold">global</span> thread_run
+    <span style="color: #008800; font-weight: bold">global</span> sound_effect
+
+    <span style="color: #008800; font-weight: bold">while</span> thread_run:
+        <span style="color: #888888"># Blocking write</span>
+        <span style="color: #008800; font-weight: bold">with</span> <span style="color: #007020">open</span>(sound_effect_fifo_path, <span style="background-color: #fff0f0">&#39;w&#39;</span>) <span style="color: #008800; font-weight: bold">as</span> fifo:
+            fifo<span style="color: #333333">.</span>write(<span style="color: #007020">str</span>(sound_effect))
+            fifo<span style="color: #333333">.</span>flush()
+        
+        time<span style="color: #333333">.</span>sleep(<span style="color: #6600EE; font-weight: bold">0.05</span>)
+
+<span style="color: #888888"># Thread for reading from the fifo </span>
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">fifo_read</span>():
+    <span style="color: #008800; font-weight: bold">global</span> thread_run
+    <span style="color: #008800; font-weight: bold">global</span> sound_effect_par_mode
+    <span style="color: #008800; font-weight: bold">global</span> sound_effect_par_value
+
+    <span style="color: #008800; font-weight: bold">while</span> thread_run:
+        <span style="color: #008800; font-weight: bold">with</span> <span style="color: #007020">open</span>(par_value_fifo_path, <span style="background-color: #fff0f0">&#39;r&#39;</span>) <span style="color: #008800; font-weight: bold">as</span> fifo:
+            data <span style="color: #333333">=</span> fifo<span style="color: #333333">.</span>readline()<span style="color: #333333">.</span>strip()
+            <span style="color: #008800; font-weight: bold">if</span> (data):
+                data_split <span style="color: #333333">=</span> data<span style="color: #333333">.</span>split(<span style="background-color: #fff0f0">&quot;_&quot;</span>)
+
+                <span style="color: #008800; font-weight: bold">if</span> (<span style="color: #007020">len</span>(data_split) <span style="color: #333333">==</span> <span style="color: #0000DD; font-weight: bold">1</span>):          <span style="color: #888888"># No mode selection: just a par value</span>
+                    sound_effect_par_value <span style="color: #333333">=</span> <span style="color: #007020">int</span>(data_split[<span style="color: #0000DD; font-weight: bold">0</span>])
+                <span style="color: #008800; font-weight: bold">elif</span> (<span style="color: #007020">len</span>(data_split) <span style="color: #333333">==</span> <span style="color: #0000DD; font-weight: bold">2</span>):        <span style="color: #888888"># Mode + par value e.g. &quot;delay_5&quot; for echoing effect</span>
+                    sound_effect_par_mode <span style="color: #333333">=</span> data_split[<span style="color: #0000DD; font-weight: bold">0</span>]
+                    sound_effect_par_value <span style="color: #333333">=</span> <span style="color: #007020">int</span>(data_split[<span style="color: #0000DD; font-weight: bold">1</span>])
+
+<span style="color: #888888">##############################################################################</span>
+<span style="color: #888888">############################ Main Code  ######################################</span>
+<span style="color: #888888">##############################################################################</span>
+
+<span style="color: #888888"># Bail out button</span>
+code_run <span style="color: #333333">=</span> <span style="color: #007020">True</span>
+thread_run <span style="color: #333333">=</span> <span style="color: #007020">True</span>
+GPIO<span style="color: #333333">.</span>add_event_detect(<span style="color: #0000DD; font-weight: bold">27</span>,GPIO<span style="color: #333333">.</span>FALLING,callback<span style="color: #333333">=</span>GPIO27_callback,bouncetime<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">300</span>)
+
+<span style="color: #888888"># Start the Thread</span>
+t1 <span style="color: #333333">=</span> Thread(target<span style="color: #333333">=</span>fifo_write)
+t2 <span style="color: #333333">=</span> Thread(target<span style="color: #333333">=</span>fifo_read)
+t1<span style="color: #333333">.</span>start()
+t2<span style="color: #333333">.</span>start()
+
+<span style="color: #888888"># State Machine Variable for Debouncing</span>
+last_pressed <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">1</span>
+
+<span style="color: #888888"># For the menu buttons</span>
+font <span style="color: #333333">=</span> pygame<span style="color: #333333">.</span>font<span style="color: #333333">.</span>SysFont(<span style="background-color: #fff0f0">&quot;Arial&quot;</span>, <span style="color: #0000DD; font-weight: bold">25</span>)
+buttons <span style="color: #333333">=</span> {<span style="background-color: #fff0f0">&#39;optimus prime&#39;</span>:(<span style="color: #0000DD; font-weight: bold">20</span>,<span style="color: #0000DD; font-weight: bold">35</span>), <span style="background-color: #fff0f0">&#39;elf/monster&#39;</span>:(<span style="color: #0000DD; font-weight: bold">20</span>,<span style="color: #0000DD; font-weight: bold">83</span>), <span style="background-color: #fff0f0">&#39;hacker&#39;</span>:(<span style="color: #0000DD; font-weight: bold">20</span>,<span style="color: #0000DD; font-weight: bold">131</span>), <span style="background-color: #fff0f0">&#39;echo&#39;</span>:(<span style="color: #0000DD; font-weight: bold">20</span>,<span style="color: #0000DD; font-weight: bold">179</span>)}
+buttons_rect <span style="color: #333333">=</span> {}    <span style="color: #888888"># Create a rect dictionary</span>
+sound_effect_name <span style="color: #333333">=</span> {Effects<span style="color: #333333">.</span>ELF<span style="color: #333333">.</span>value: <span style="background-color: #fff0f0">&#39;elf/monster&#39;</span>, Effects<span style="color: #333333">.</span>ROBOT<span style="color: #333333">.</span>value: <span style="background-color: #fff0f0">&#39;optimus prime&#39;</span>, Effects<span style="color: #333333">.</span>ECHO<span style="color: #333333">.</span>value: <span style="background-color: #fff0f0">&#39;echo&#39;</span>, Effects<span style="color: #333333">.</span>ALIEN<span style="color: #333333">.</span>value: <span style="background-color: #fff0f0">&#39;hacker&#39;</span>}
+
+<span style="color: #888888"># For the shuffle icon and gif display</span>
+icon <span style="color: #333333">=</span> pygame<span style="color: #333333">.</span>transform<span style="color: #333333">.</span>scale(pygame<span style="color: #333333">.</span>image<span style="color: #333333">.</span>load(<span style="background-color: #fff0f0">&quot;/home/pi/final_project/shuffle_icon.png&quot;</span>),(<span style="color: #0000DD; font-weight: bold">40</span>,<span style="color: #0000DD; font-weight: bold">40</span>))
+icon_rect <span style="color: #333333">=</span> icon<span style="color: #333333">.</span>get_rect(center<span style="color: #333333">=</span>(<span style="color: #0000DD; font-weight: bold">270</span>,<span style="color: #0000DD; font-weight: bold">70</span>))
+gif_size <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">180</span>,<span style="color: #0000DD; font-weight: bold">120</span>
+gif_pos <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">140</span>,<span style="color: #0000DD; font-weight: bold">120</span>
+
+<span style="color: #888888"># Hacker gif - frame by frame</span>
+hacker_f1 <span style="color: #333333">=</span> pygame<span style="color: #333333">.</span>transform<span style="color: #333333">.</span>scale(pygame<span style="color: #333333">.</span>image<span style="color: #333333">.</span>load_extended(<span style="background-color: #fff0f0">&quot;/home/pi/final_project/frame-1.gif&quot;</span>),gif_size)
+hacker_f1_rect <span style="color: #333333">=</span> hacker_f1<span style="color: #333333">.</span>get_rect(topleft<span style="color: #333333">=</span>gif_pos)
+hacker_f2 <span style="color: #333333">=</span> pygame<span style="color: #333333">.</span>transform<span style="color: #333333">.</span>scale(pygame<span style="color: #333333">.</span>image<span style="color: #333333">.</span>load_extended(<span style="background-color: #fff0f0">&quot;/home/pi/final_project/frame-2.gif&quot;</span>),gif_size)
+hacker_f2_rect <span style="color: #333333">=</span> hacker_f2<span style="color: #333333">.</span>get_rect(topleft<span style="color: #333333">=</span>gif_pos)
+hacker_f3 <span style="color: #333333">=</span> pygame<span style="color: #333333">.</span>transform<span style="color: #333333">.</span>scale(pygame<span style="color: #333333">.</span>image<span style="color: #333333">.</span>load_extended(<span style="background-color: #fff0f0">&quot;/home/pi/final_project/frame-3.gif&quot;</span>),gif_size)
+hacker_f3_rect <span style="color: #333333">=</span> hacker_f3<span style="color: #333333">.</span>get_rect(topleft<span style="color: #333333">=</span>gif_pos)
+hacker_f4 <span style="color: #333333">=</span> pygame<span style="color: #333333">.</span>transform<span style="color: #333333">.</span>scale(pygame<span style="color: #333333">.</span>image<span style="color: #333333">.</span>load_extended(<span style="background-color: #fff0f0">&quot;/home/pi/final_project/frame-4.gif&quot;</span>),gif_size)
+hacker_f4_rect <span style="color: #333333">=</span> hacker_f4<span style="color: #333333">.</span>get_rect(topleft<span style="color: #333333">=</span>gif_pos)
+hacker_f5 <span style="color: #333333">=</span> pygame<span style="color: #333333">.</span>transform<span style="color: #333333">.</span>scale(pygame<span style="color: #333333">.</span>image<span style="color: #333333">.</span>load_extended(<span style="background-color: #fff0f0">&quot;/home/pi/final_project/frame-5.gif&quot;</span>),gif_size)
+hacker_f5_rect <span style="color: #333333">=</span> hacker_f5<span style="color: #333333">.</span>get_rect(topleft<span style="color: #333333">=</span>gif_pos)
+hacker_f6 <span style="color: #333333">=</span> pygame<span style="color: #333333">.</span>transform<span style="color: #333333">.</span>scale(pygame<span style="color: #333333">.</span>image<span style="color: #333333">.</span>load_extended(<span style="background-color: #fff0f0">&quot;/home/pi/final_project/frame-6.gif&quot;</span>),gif_size)
+hacker_f6_rect <span style="color: #333333">=</span> hacker_f6<span style="color: #333333">.</span>get_rect(topleft<span style="color: #333333">=</span>gif_pos)
+gif_hacker <span style="color: #333333">=</span> [hacker_f1, hacker_f2, hacker_f3, hacker_f4, hacker_f5, hacker_f6]
+gif_hacker_rect <span style="color: #333333">=</span> [hacker_f1_rect, hacker_f2_rect, hacker_f3_rect, hacker_f4_rect, hacker_f5_rect, hacker_f6_rect]
+
+<span style="color: #888888"># Optimus Prime gif - frame by frame</span>
+robot_f1 <span style="color: #333333">=</span> pygame<span style="color: #333333">.</span>transform<span style="color: #333333">.</span>scale(pygame<span style="color: #333333">.</span>image<span style="color: #333333">.</span>load_extended(<span style="background-color: #fff0f0">&quot;/home/pi/final_project/frame-01.gif&quot;</span>),gif_size)
+robot_f1_rect <span style="color: #333333">=</span> robot_f1<span style="color: #333333">.</span>get_rect(topleft<span style="color: #333333">=</span>gif_pos)
+robot_f2 <span style="color: #333333">=</span> pygame<span style="color: #333333">.</span>transform<span style="color: #333333">.</span>scale(pygame<span style="color: #333333">.</span>image<span style="color: #333333">.</span>load_extended(<span style="background-color: #fff0f0">&quot;/home/pi/final_project/frame-02.gif&quot;</span>),gif_size)
+robot_f2_rect <span style="color: #333333">=</span> robot_f2<span style="color: #333333">.</span>get_rect(topleft<span style="color: #333333">=</span>gif_pos)
+robot_f3 <span style="color: #333333">=</span> pygame<span style="color: #333333">.</span>transform<span style="color: #333333">.</span>scale(pygame<span style="color: #333333">.</span>image<span style="color: #333333">.</span>load_extended(<span style="background-color: #fff0f0">&quot;/home/pi/final_project/frame-03.gif&quot;</span>),gif_size)
+robot_f3_rect <span style="color: #333333">=</span> robot_f3<span style="color: #333333">.</span>get_rect(topleft<span style="color: #333333">=</span>gif_pos)
+robot_f4 <span style="color: #333333">=</span> pygame<span style="color: #333333">.</span>transform<span style="color: #333333">.</span>scale(pygame<span style="color: #333333">.</span>image<span style="color: #333333">.</span>load_extended(<span style="background-color: #fff0f0">&quot;/home/pi/final_project/frame-04.gif&quot;</span>),gif_size)
+robot_f4_rect <span style="color: #333333">=</span> robot_f4<span style="color: #333333">.</span>get_rect(topleft<span style="color: #333333">=</span>gif_pos)
+robot_f5 <span style="color: #333333">=</span> pygame<span style="color: #333333">.</span>transform<span style="color: #333333">.</span>scale(pygame<span style="color: #333333">.</span>image<span style="color: #333333">.</span>load_extended(<span style="background-color: #fff0f0">&quot;/home/pi/final_project/frame-05.gif&quot;</span>),gif_size)
+robot_f5_rect <span style="color: #333333">=</span> robot_f5<span style="color: #333333">.</span>get_rect(topleft<span style="color: #333333">=</span>gif_pos)
+robot_f6 <span style="color: #333333">=</span> pygame<span style="color: #333333">.</span>transform<span style="color: #333333">.</span>scale(pygame<span style="color: #333333">.</span>image<span style="color: #333333">.</span>load_extended(<span style="background-color: #fff0f0">&quot;/home/pi/final_project/frame-06.gif&quot;</span>),gif_size)
+robot_f6_rect <span style="color: #333333">=</span> robot_f6<span style="color: #333333">.</span>get_rect(topleft<span style="color: #333333">=</span>gif_pos)
+gif_robot <span style="color: #333333">=</span> [robot_f1, robot_f2, robot_f3, robot_f4, robot_f5, robot_f6]
+gif_robot_rect <span style="color: #333333">=</span> [robot_f1_rect, robot_f2_rect, robot_f3_rect, robot_f4_rect, robot_f5_rect, robot_f6_rect]
+
+<span style="color: #888888"># For looping through the gif frames</span>
+gif_frame_count <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>
+
+<span style="color: #888888"># For the parameter display</span>
+par_name_pos <span style="color: #333333">=</span> (<span style="color: #0000DD; font-weight: bold">230</span>,<span style="color: #0000DD; font-weight: bold">150</span>)
+par_value_pos <span style="color: #333333">=</span> (<span style="color: #0000DD; font-weight: bold">230</span>,<span style="color: #0000DD; font-weight: bold">180</span>)
+sound_effect_par_value <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>
+sound_effect_par_mode <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>
+
+<span style="color: #008800; font-weight: bold">while</span> code_run:
+    time<span style="color: #333333">.</span>sleep(<span style="color: #6600EE; font-weight: bold">0.1</span>)
+
+    <span style="color: #888888"># Erase the screen</span>
+    screen<span style="color: #333333">.</span>fill(black)
+
+    <span style="color: #888888"># Draw the buttons</span>
+    <span style="color: #008800; font-weight: bold">for</span> my_text, text_pos <span style="color: #000000; font-weight: bold">in</span> buttons<span style="color: #333333">.</span>items():
+        text_surface <span style="color: #333333">=</span> font<span style="color: #333333">.</span>render(my_text, <span style="color: #007020">True</span>, white)
+        rect <span style="color: #333333">=</span> text_surface<span style="color: #333333">.</span>get_rect(topleft<span style="color: #333333">=</span>text_pos)
+        
+        <span style="color: #888888"># Draw the button background</span>
+        rect_button <span style="color: #333333">=</span> rect<span style="color: #333333">.</span>inflate(<span style="color: #0000DD; font-weight: bold">10</span>, <span style="color: #0000DD; font-weight: bold">10</span>)
+        
+        <span style="color: #008800; font-weight: bold">if</span> (sound_effect <span style="color: #333333">!=</span> <span style="color: #0000DD; font-weight: bold">0</span>):
+            <span style="color: #888888"># Current sound effect</span>
+            <span style="color: #008800; font-weight: bold">if</span> (sound_effect_name[sound_effect] <span style="color: #333333">==</span> my_text):       <span style="color: #888888"># The pressed button</span>
+                pygame<span style="color: #333333">.</span>draw<span style="color: #333333">.</span>rect(screen, dark_red, rect_button)
+            <span style="color: #008800; font-weight: bold">else</span>:
+                pygame<span style="color: #333333">.</span>draw<span style="color: #333333">.</span>rect(screen, gray, rect_button)
+        <span style="color: #008800; font-weight: bold">else</span>:
+            <span style="color: #888888"># All buttons has not been pressed in the initial state</span>
+            pygame<span style="color: #333333">.</span>draw<span style="color: #333333">.</span>rect(screen, gray, rect_button)
+
+        <span style="color: #888888"># Draw the button text</span>
+        screen<span style="color: #333333">.</span>blit(text_surface, rect)
+
+        <span style="color: #888888"># Save rect for &#39;my_text&#39; button for checking screen touches</span>
+        buttons_rect[my_text] <span style="color: #333333">=</span> rect
+
+    <span style="color: #888888"># Draw the randomize button</span>
+    screen<span style="color: #333333">.</span>blit(icon, icon_rect)
+
+    <span style="color: #888888"># For looping the gif</span>
+    <span style="color: #008800; font-weight: bold">if</span> (gif_frame_count <span style="color: #333333">==</span> <span style="color: #0000DD; font-weight: bold">6</span>):
+        gif_frame_count <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>
+
+    <span style="color: #888888"># Display the sound effect parameter/gif</span>
+    <span style="color: #008800; font-weight: bold">if</span> (sound_effect <span style="color: #333333">==</span> Effects<span style="color: #333333">.</span>ELF<span style="color: #333333">.</span>value):
+        text_surface <span style="color: #333333">=</span> font<span style="color: #333333">.</span>render(<span style="background-color: #fff0f0">&quot;freq shift&quot;</span>, <span style="color: #007020">True</span>, white)
+        rect <span style="color: #333333">=</span> text_surface<span style="color: #333333">.</span>get_rect(center<span style="color: #333333">=</span>par_name_pos)
+        screen<span style="color: #333333">.</span>blit(text_surface, rect)
+
+        text_surface <span style="color: #333333">=</span> font<span style="color: #333333">.</span>render(<span style="color: #007020">str</span>(sound_effect_par_value), <span style="color: #007020">True</span>, white)
+        rect <span style="color: #333333">=</span> text_surface<span style="color: #333333">.</span>get_rect(center<span style="color: #333333">=</span>par_value_pos)
+        screen<span style="color: #333333">.</span>blit(text_surface, rect)
+
+    <span style="color: #008800; font-weight: bold">elif</span> (sound_effect <span style="color: #333333">==</span> Effects<span style="color: #333333">.</span>ECHO<span style="color: #333333">.</span>value):
+        <span style="color: #008800; font-weight: bold">if</span> (sound_effect_par_mode <span style="color: #333333">==</span> <span style="background-color: #fff0f0">&quot;num&quot;</span>):
+            text_surface <span style="color: #333333">=</span> font<span style="color: #333333">.</span>render(<span style="background-color: #fff0f0">&quot;echo num&quot;</span>, <span style="color: #007020">True</span>, white)
+            rect <span style="color: #333333">=</span> text_surface<span style="color: #333333">.</span>get_rect(center<span style="color: #333333">=</span>par_name_pos)
+            screen<span style="color: #333333">.</span>blit(text_surface, rect)
+        <span style="color: #008800; font-weight: bold">elif</span> (sound_effect_par_mode <span style="color: #333333">==</span> <span style="background-color: #fff0f0">&quot;delay&quot;</span>):
+            text_surface <span style="color: #333333">=</span> font<span style="color: #333333">.</span>render(<span style="background-color: #fff0f0">&quot;echo delay&quot;</span>, <span style="color: #007020">True</span>, white)
+            rect <span style="color: #333333">=</span> text_surface<span style="color: #333333">.</span>get_rect(center<span style="color: #333333">=</span>par_name_pos)
+            screen<span style="color: #333333">.</span>blit(text_surface, rect)
+        
+        text_surface <span style="color: #333333">=</span> font<span style="color: #333333">.</span>render(<span style="color: #007020">str</span>(sound_effect_par_value), <span style="color: #007020">True</span>, white)
+        rect <span style="color: #333333">=</span> text_surface<span style="color: #333333">.</span>get_rect(center<span style="color: #333333">=</span>par_value_pos)
+        screen<span style="color: #333333">.</span>blit(text_surface, rect)
+
+    <span style="color: #008800; font-weight: bold">elif</span> (sound_effect <span style="color: #333333">==</span> Effects<span style="color: #333333">.</span>ALIEN<span style="color: #333333">.</span>value):
+        screen<span style="color: #333333">.</span>blit(gif_hacker[gif_frame_count], gif_hacker_rect[gif_frame_count])
+        gif_frame_count <span style="color: #333333">+=</span> <span style="color: #0000DD; font-weight: bold">1</span>
+
+    <span style="color: #008800; font-weight: bold">elif</span> (sound_effect <span style="color: #333333">==</span> Effects<span style="color: #333333">.</span>ROBOT<span style="color: #333333">.</span>value):
+        screen<span style="color: #333333">.</span>blit(gif_robot[gif_frame_count], gif_robot_rect[gif_frame_count])
+        gif_frame_count <span style="color: #333333">+=</span> <span style="color: #0000DD; font-weight: bold">1</span>
+
+    pygame<span style="color: #333333">.</span>display<span style="color: #333333">.</span>flip()
+
+    <span style="color: #888888"># Detect touch screen button press</span>
+    <span style="color: #008800; font-weight: bold">for</span> event <span style="color: #000000; font-weight: bold">in</span> pygame<span style="color: #333333">.</span>event<span style="color: #333333">.</span>get():
+        <span style="color: #008800; font-weight: bold">if</span> (event<span style="color: #333333">.</span>type <span style="color: #000000; font-weight: bold">is</span> MOUSEBUTTONUP):
+            <span style="color: #888888"># If no touch, reset the pos value</span>
+            pos <span style="color: #333333">=</span> <span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">1</span>,<span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">1</span>
+            last_pressed <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">1</span>
+        <span style="color: #008800; font-weight: bold">elif</span> (event<span style="color: #333333">.</span>type <span style="color: #000000; font-weight: bold">is</span> MOUSEBUTTONDOWN):
+            <span style="color: #888888"># If touched, store the position value</span>
+            <span style="color: #008800; font-weight: bold">if</span> (last_pressed<span style="color: #333333">==</span><span style="color: #0000DD; font-weight: bold">1</span>):
+                pos <span style="color: #333333">=</span> pygame<span style="color: #333333">.</span>mouse<span style="color: #333333">.</span>get_pos()
+                pygame<span style="color: #333333">.</span>display<span style="color: #333333">.</span>flip()
+                last_pressed <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span> <span style="color: #888888"># Reset the parameter, ensuring that the touched position will only be stored once</span>
+
+        <span style="color: #008800; font-weight: bold">for</span> (my_text, rect) <span style="color: #000000; font-weight: bold">in</span> buttons_rect<span style="color: #333333">.</span>items():     <span style="color: #888888"># for saved button rects</span>
+            <span style="color: #008800; font-weight: bold">if</span> (rect<span style="color: #333333">.</span>collidepoint(pos)):
+                <span style="color: #008800; font-weight: bold">if</span> (my_text <span style="color: #333333">==</span> <span style="background-color: #fff0f0">&#39;elf/monster&#39;</span>):
+                    <span style="color: #888888"># If elf/monster button pressed</span>
+                    sound_effect <span style="color: #333333">=</span> Effects<span style="color: #333333">.</span>ELF<span style="color: #333333">.</span>value
+                <span style="color: #008800; font-weight: bold">if</span> (my_text <span style="color: #333333">==</span> <span style="background-color: #fff0f0">&#39;echo&#39;</span>):
+                    <span style="color: #888888"># If echo button pressed</span>
+                    sound_effect <span style="color: #333333">=</span> Effects<span style="color: #333333">.</span>ECHO<span style="color: #333333">.</span>value
+                <span style="color: #008800; font-weight: bold">if</span> (my_text <span style="color: #333333">==</span> <span style="background-color: #fff0f0">&#39;optimus prime&#39;</span>):
+                    <span style="color: #888888"># If optimus prime button pressed</span>
+                    sound_effect <span style="color: #333333">=</span> Effects<span style="color: #333333">.</span>ROBOT<span style="color: #333333">.</span>value
+                <span style="color: #008800; font-weight: bold">if</span> (my_text <span style="color: #333333">==</span> <span style="background-color: #fff0f0">&#39;hacker&#39;</span>):
+                    <span style="color: #888888"># If alien button pressed</span>
+                    sound_effect <span style="color: #333333">=</span> Effects<span style="color: #333333">.</span>ALIEN<span style="color: #333333">.</span>value
+        
+        <span style="color: #888888"># When the randomize button is pressed, choose randomly a sound effect other than the current one</span>
+        <span style="color: #008800; font-weight: bold">if</span> icon_rect<span style="color: #333333">.</span>collidepoint(pos):
+            sound_effect <span style="color: #333333">=</span> random<span style="color: #333333">.</span>choice([effect<span style="color: #333333">.</span>value <span style="color: #008800; font-weight: bold">for</span> effect <span style="color: #000000; font-weight: bold">in</span> Effects <span style="color: #008800; font-weight: bold">if</span> effect <span style="color: #333333">!=</span> sound_effect])
+
+
+t1<span style="color: #333333">.</span>join()   <span style="color: #888888"># End the thread</span>
+t2<span style="color: #333333">.</span>join()
+GPIO<span style="color: #333333">.</span>cleanup()
+    </pre>
+</div>
+
+    
+    </div>
+    </div><!-- /.container -->
+
+
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="dist/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <!-- <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script> -->
+  </body>
+</html>
